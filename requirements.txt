@@ -1,0 +1,3 @@
+pynput==1.7.6
+python_rtmidi==1.4.9
+rtmidi==2.3.4
