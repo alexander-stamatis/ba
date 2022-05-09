@@ -40,6 +40,6 @@
   },
   "settings": {
     "clock": ".01",
-    "strum": ".05"
+    "strum": "0"
   }
 }
