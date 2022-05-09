@@ -39,8 +39,7 @@
     "84": "]"
   },
   "settings": {
-    "default_midi_input": "0",
     "clock": ".01",
-    "play_note_on_directional_release": "FALSE"
+    "strum": ".05"
   }
 }

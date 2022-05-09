@@ -28,7 +28,6 @@ if __name__ == "__main__":
     log = logging.getLogger('midiin_poll')
     logging.basicConfig(level=logging.DEBUG)
 
-    strum = .5
     pressedNotesStack = list()
     releasedNotesStack = list()
     step = 1
@@ -64,7 +63,7 @@ if __name__ == "__main__":
             if MSG and MSG.type != None:
                 if MSG.note in settings.key_bindings_keys:
                     messages.append(MSG)
-                    if strum == 0:
+                    if settings.strum == 0:
                         handleMessage(MSG)
                 return getMidiInput(messages)
         else:
@@ -75,20 +74,20 @@ if __name__ == "__main__":
             messages = getMidiInput(list())
 
             # strum
-            if abs(strum) != 0:
-                timer += abs(strum)
+            if abs(settings.strum) != 0:
+                timer += abs(settings.strum)
                 if messages:
                     if messages[0].type is NoteType.PRESS:
                         if len(pressedNotesStack) == 0:
                             for m in messages:
-                                if strum < 0:
+                                if settings.strum < 0:
                                     pressedNotesStack.append(m)
                                 else:
                                     pressedNotesStack.insert(0, m)
                     if messages[0].type is NoteType.RELEASE:
                         if len(releasedNotesStack) == 0:
                             for m in messages:
-                                if strum < 0:
+                                if settings.strum < 0:
                                     releasedNotesStack.append(m)
                                 else:
                                     releasedNotesStack.insert(0, m)
