@@ -40,6 +40,48 @@
   },
   "settings": {
     "clock": ".01",
-    "strum": "0"
+    "strum": "0",
+    "active_scale": "Chromatic"
+  },
+  "scales": {
+    "Chromatic": [
+      "C",
+      "C#",
+      "D",
+      "Eb",
+      "E",
+      "F",
+      "F#",
+      "G",
+      "A#",
+      "A",
+      "A#",
+      "B"
+    ],
+    "C-Major": ["C", "D", "E", "F", "G", "A", "B"],
+    "C#-Major": ["Db", "Eb", "F", "Gb", "Ab", "Bb", "C", "Db"],
+    "D-Major": ["D", "E", "F#", "G", "A", "B", "C#", "D"],
+    "D#-Major": ["Eb", "F", "G", "Ab", "Bb", "C", "D", "Eb"],
+    "E-Major": ["E", "F#", "G#", "A", "B", "C#", "D#", "E"],
+    "F-Major": ["F", "G", "A", "Bb", "C", "D", "E", "F"],
+    "F#-Major": ["F#", "G#", "A#", "B", "C#", "D#", "F", "F#"],
+    "G-Major": ["G", "A", "B", "C", "D", "E", "F#", "G"],
+    "G#-Major": ["Ab", "Bb", "C", "Db", "Eb", "F", "G", "Ab"],
+    "A-Major": ["A", "B", "C#", "D", "E", "F#", "G#", "A"],
+    "A#-Major": ["Bb", "C", "D", "Eb", "F", "G", "A", "Bb"],
+    "B-Major": ["B", "C#", "D#", "E", "F#", "G#", "A#", "B"],
+    "Cm-Pentatonic": ["C", "Eb", "F", "F#", "G", "Bb", "C"],
+    "C#m-Pentatonic": ["C#", "E", "F#", "G", "G#", "B", "C#"],
+    "Dm-Pentatonic": ["D", "F", "G", "G#", "A", "C", "D"],
+    "D#m-Pentatonic": ["D#", "F#", "G#", "A", "A#", "C#", "D#"],
+    "Em-Pentatonic": ["E", "G", "A", "A#", "B", "D", "E"],
+    "Fm-Pentatonic": ["F", "Ab", "Bb", "B", "C", "Eb", "F"],
+    "F#m-Pentatonic": ["F#", "A", "B", "C", "C#", "E", "F#"],
+    "Gm-Pentatonic": ["G", "Bb", "C", "Db", "D", "F", "G"],
+    "G#m-Pentatonic": ["G#", "B", "C#", "D", "D#", "F#", "G#"],
+    "Am-Pentatonic": ["A", "C", "D", "D#", "E", "G", "A"],
+    "A#m-Pentatonic": ["A#", "C#", "D#", "E", "E#", "G#", "A#"],
+    "Bm-Pentatonic": ["B", "D", "E", "F", "F#", "A", "B"],
+    "MyCustomScale": ["D#", "E", "Ab", "B"]
   }
 }
