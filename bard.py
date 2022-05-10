@@ -2,7 +2,7 @@
 #
 # bard.py
 #
-''' 
+'''
 Converts MIDI input to computer keyboard input
 '''
 import gc
@@ -15,6 +15,14 @@ from rtmidi.midiutil import *
 from pynput.keyboard import Controller
 from settings import Settings
 from message import Message, NoteType
+
+
+class Key():
+    def __init__(self, value):
+        self.value = value
+        self.left = None
+        self.right = None
+
 
 if __name__ == "__main__":
     gc.enable()
@@ -33,9 +41,36 @@ if __name__ == "__main__":
     step = 1
     timer = step
 
-    if midiin != None:
-        midiin.close_port()
-        midiin = None
+    print("\n", "The scale selected is:", settings.active_scale, "\n",
+          "Active notes:", settings.scales[settings.active_scale], "\n")
+
+    keys = [
+        Key("C"),
+        Key("C#"),
+        Key("D"),
+        Key("D#"),
+        Key("E"),
+        Key("F"),
+        Key("F#"),
+        Key("G"),
+        Key("A#"),
+        Key("A"),
+        Key("A#"),
+        Key("B")
+    ]
+
+    for index in range(len(keys)):
+        if index == 0:
+            keys[index].left = keys[len(keys) - 1]
+        elif index == len(keys) - 1:
+            keys[index].right = keys[0]
+        if keys[index].left == None:
+            keys[index].left = keys[index - 1]
+        if keys[index].right == None:
+            keys[index].right = keys[index + 1]
+        if midiin != None:
+            midiin.close_port()
+            midiin = None
 
     port = sys.argv[1] if len(sys.argv) > 1 else None
 
@@ -44,28 +79,65 @@ if __name__ == "__main__":
     except (EOFError, KeyboardInterrupt):
         sys.exit()
 
+    def GetNote(message):
+        return keys[message % 12].value
+
+    def FlatToSharp():
+        converted = []
+        for n in settings.active_scale_notes:
+            if n.strip().__contains__('b'):
+                for k in keys:
+                    if k.value == n[0]:
+                        converted.append(k.left.value)
+            else:
+                converted.append(n)
+        return converted
+
+    convertedKeys = FlatToSharp()
+
     def GetKey(message):
         if message in settings.key_bindings:
             if message:
                 if message > 0 and message != 127:
-                    return settings.key_bindings[message]
+                    if settings.active_scale == "Chromatic":
+                        return settings.key_bindings[message]
+                    else:
+                        note = GetNote(message)
+                        if note in convertedKeys:
+                            return settings.key_bindings[message]
+                        else:
+                            starting_point = None
+                            for k in keys:
+                                if k.value == GetNote(message):
+                                    starting_point = k
+                            offset = 0
+                            while starting_point.value not in convertedKeys:
+                                starting_point = starting_point.left
+                                offset += 1
+                            try:
+                                return settings.key_bindings[message - offset]
+                            except:
+                                return None
 
     def handleMessage(message):
-        if message.type == NoteType.PRESS:
-            keyboard.press(GetKey(message.note))
-        elif message.type == NoteType.RELEASE:
-            keyboard.release(GetKey(message.note))
+        key = GetKey(message.note)
+        if key != None:
+            if message.type == NoteType.PRESS:
+                keyboard.press(key)
+            elif message.type == NoteType.RELEASE:
+                keyboard.release(key)
 
     def getMidiInput(messages):
         midiin_message = midiin.get_message()
         if midiin_message:
             MSG = Message(midiin_message)
-            if MSG and MSG.type != None:
-                if MSG.note in settings.key_bindings_keys:
-                    messages.append(MSG)
-                    if settings.strum == 0:
-                        handleMessage(MSG)
-                return getMidiInput(messages)
+            if MSG:
+                if MSG.type != None:
+                    if MSG.note in settings.key_bindings_keys:
+                        messages.append(MSG)
+                        if settings.strum == 0:
+                            handleMessage(MSG)
+                    return getMidiInput(messages)
         else:
             return messages
 
